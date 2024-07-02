@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Game>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@{
+    Pager pager = new Pager();
+    int pageNo = 0;
+    if (ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
+}
+
+
+@if (!Model.Any())
+{
+    <div class="alert alert-warning">
+        <h4 class="alert-heading">No Games!</h4>
+        <p class="mb-0">No Games were added yet</p>
+    </div>
+}
+
+else
+{
+    
+    <div class="row mt-5">
+ 
+        @foreach(var game in Model)
+        {         
+            <div class="col-lg-3 col-md-6">
+                <a class="card border-success mb-3 text-decoration-none rounded-3 overflow-hidden" asp-controller="Games" asp-action="Details" asp-route-id="@game.Id">
+                    <div class="card-body"
+                    style="background-image:url(@($"{FileSettings.ImagesPath}/{game.Cover}"));
+                    background-size:cover; background-position:center; height:400px;">
+                        <div class="h-100 d-flex align-items-end">
+                            <span class="badge bg-secondary rounded-0 fs-6">@game.category.Name</span>
+                            </div>
+                    </div>
+                    <div class="card-footer text-muted d-flex justify-content-between align-items-center">
+                        <h5>@game.Name</h5>
+                              <div>
+                            @foreach(var device in game.gameDevices)
+                            {
+                                <i class="@device.device.Icon me-2 fs-4"></i>
+                            }
+                        </div>
+                        </div>
+                </a>
+            </div>
+        }
+    </div>
+    
+}
+
+                    <div>
+    @foreach(var category in ViewBag.categories)
+    {
+        <a asp-action="Index" asp-route-categoryName="@category.Name">@category.Name</a>
+        <br/>
+    }
+</div>
+
+
+
+<nav aria-label="Page navigation example">
+    @if (pager.TotalPages > 0)
+    {
+        <ul class="pagination">
+            @for (var pge = pager.StartPage; pge <= pager.EndPage; pge++)
+            {
+                <li class="page-item @(pge==pager.CurrentPage ? "active": "")">
+                    <a class="page-link" asp-controller="Home" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                </li>
+            }
+        </ul>
+    }
+</nav>

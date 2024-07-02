@@ -1,0 +1,25 @@
+﻿@model CountryAndCityForm
+
+
+
+
+
+
+<div>
+    <label asp-for="CountryId" class="form-label mt-4"></label>
+    <select asp-for="CountryId" class="form-select" asp-items="@Model.Country">
+        <option></option>
+    </select>
+    <span asp-validation-for="CountryId" class="text-danger"></span>
+</div>
+
+<div>
+    <label asp-for="CityId" class="form-label mt-4"></label>
+    <select asp-for="CityId" class="form-select" asp-items="@Model.City">
+    </select>
+    <span asp-validation-for="CityId" class="text-danger"></span>
+</div>
+
+@section Scripts {
+    <script src="~/js/getcities.js"></script>
+}
